@@ -17,7 +17,6 @@ func main() {
 			fmt.Println(err)
 		}
 		input = strings.TrimSuffix(input, "\n")
-
 		args := strings.Split(input, " ")
 
 		if len(args) < 1 {
@@ -28,6 +27,6 @@ func main() {
 		if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Printf("%s\n", stdoutStderr)
+		fmt.Printf("%s", stdoutStderr)
 	}
 }
