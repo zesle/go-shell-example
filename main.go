@@ -36,6 +36,7 @@ func execLine(input string) error {
 		args = append(args, "")
 	}
 
+	// check for shell build-in command
 	switch args[0] {
 	case "cd":
 		// cd to home with empty path not yet supported
@@ -46,8 +47,11 @@ func execLine(input string) error {
 		if err != nil {
 			return err
 		}
+		// stop further processing
+		return nil
 	}
 
+	// execute programm
 	cmd := exec.Command(args[0], args[1:]...)
 	stdoutStderr, err := cmd.CombinedOutput()
 	if err != nil {
