@@ -49,6 +49,8 @@ func execInput(input string) error {
 		}
 		// stop further processing
 		return nil
+	case "exit":
+		os.Exit(0)
 	}
 
 	// execute programm
