@@ -18,17 +18,17 @@ func main() {
 			fmt.Println(err)
 		}
 
-		err = execLine(input)
+		err = execInput(input)
 		if err != nil {
 			fmt.Println(err)
 		}
 	}
 }
 
-// ErrNoPath is returned when cd was called without a second argument
+// ErrNoPath is returned when 'cd' was called without a second argument
 var ErrNoPath = errors.New("path required")
 
-func execLine(input string) error {
+func execInput(input string) error {
 	input = strings.TrimSuffix(input, "\n")
 	args := strings.Split(input, " ")
 
