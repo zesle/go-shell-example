@@ -5,22 +5,22 @@ import (
 	"testing"
 )
 
-func TestExecLine_noArg(t *testing.T) {
-	err := execLine("ls")
+func TestExecInput_noArg(t *testing.T) {
+	err := execInput("ls")
 	if err != nil {
 		t.Errorf("Failed to run 'ls' command: %v", err)
 	}
 }
 
 func TestExecLine_withArg(t *testing.T) {
-	err := execLine("ls -l")
+	err := execInput("ls -l")
 	if err != nil {
 		t.Errorf("Failed to run 'ls -l' command: %v", err)
 	}
 }
 
 func TestCD_noArg(t *testing.T) {
-	err := execLine("cd")
+	err := execInput("cd")
 	if err == ErrNoPath {
 		return
 	}
@@ -34,7 +34,7 @@ func TestCD_withArg(t *testing.T) {
 		t.Errorf("Failed to get curent directory: %v", err)
 	}
 
-	err = execLine("cd ..")
+	err = execInput("cd ..")
 	if err != nil {
 		t.Errorf("Failed to run 'cd ..' command: %v", err)
 	}
