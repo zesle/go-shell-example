@@ -5,45 +5,90 @@ import (
 	"testing"
 )
 
-func TestExecInput_noArg(t *testing.T) {
-	err := execInput("ls")
-	if err != nil {
-		t.Errorf("Failed to run 'ls' command: %v", err)
+func TestExecInput(t *testing.T) {
+	tests := []struct {
+		name        string
+		givenInput  string
+		expectedDir string // only for testing 'cd'
+		expectedErr error
+	}{
+		{
+			name:        "happy: ls",
+			givenInput:  "ls",
+			expectedErr: nil,
+		},
+		{
+			name:        "happy: ls -l -a",
+			givenInput:  "ls -l -a",
+			expectedErr: nil,
+		},
+		{
+			name:        "happy: cd",
+			givenInput:  "cd",
+			expectedErr: ErrNoPath,
+		},
+		{
+			name:        "happy; cd /",
+			givenInput:  "cd /",
+			expectedErr: nil,
+			expectedDir: "/",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+
+			// test command
+			if err := execInput(tt.givenInput); err != tt.expectedErr {
+				t.Errorf("execInput() error = %v, wantErr %v", err, tt.expectedErr)
+			}
+
+			// test for changed directory only
+			if tt.expectedDir != "" {
+				curDir, err := os.Getwd()
+				if err != nil {
+					t.Errorf("Failed to get new directory: %v", err)
+				}
+				if tt.expectedDir != curDir {
+					t.Errorf("Failed to change to desired directory.")
+				}
+			}
+		})
 	}
 }
 
-func TestExecLine_withArg(t *testing.T) {
-	err := execInput("ls -l")
-	if err != nil {
-		t.Errorf("Failed to run 'ls -l' command: %v", err)
+func TestExecInputCD(t *testing.T) {
+	tests := []struct {
+		name        string
+		givenInput  string
+		expectedDir string // only for testing 'cd'
+		expectedErr error
+	}{
+		{
+			name:        "cd",
+			givenInput:  "cd",
+			expectedErr: ErrNoPath,
+		},
+		{
+			name:        "cd /",
+			givenInput:  "cd /",
+			expectedErr: nil,
+			expectedDir: "/",
+		},
 	}
-}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := execInput(tt.givenInput); err != tt.expectedErr {
+				t.Errorf("execInput() error = %v, wantErr %v", err, tt.expectedErr)
+			}
 
-func TestCD_noArg(t *testing.T) {
-	err := execInput("cd")
-	if err == ErrNoPath {
-		return
-	}
-	if err != nil {
-		t.Errorf("Failed to run 'cd' command: %v", err)
-	}
-}
-func TestCD_withArg(t *testing.T) {
-	oldDir, err := os.Getwd()
-	if err != nil {
-		t.Errorf("Failed to get curent directory: %v", err)
-	}
+			curDir, err := os.Getwd()
+			if err != nil {
+				t.Errorf("Failed to get new directory: %v", err)
+			}
 
-	err = execInput("cd ..")
-	if err != nil {
-		t.Errorf("Failed to run 'cd ..' command: %v", err)
-	}
-
-	newDir, err := os.Getwd()
-	if err != nil {
-		t.Errorf("Failed to get new directory: %v", err)
-	}
-	if oldDir == newDir {
-		t.Errorf("Failed to change directory.")
+			if tt.expectedDir != "" && tt.expectedDir != curDir {
+				t.Errorf("Failed to change to desired directory.")
+			}
+		})
 	}
 }
