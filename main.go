@@ -32,10 +32,6 @@ func execInput(input string) error {
 	input = strings.TrimSuffix(input, "\n")
 	args := strings.Split(input, " ")
 
-	if len(args) < 1 {
-		args = append(args, "")
-	}
-
 	// check for shell build-in command
 	switch args[0] {
 	case "cd":
@@ -54,6 +50,7 @@ func execInput(input string) error {
 	}
 
 	// execute programm
+	// cmd := exec.Command(input)
 	cmd := exec.Command(args[0], args[1:]...)
 	stdoutStderr, err := cmd.CombinedOutput()
 	if err != nil {
