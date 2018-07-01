@@ -13,11 +13,13 @@ func main() {
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		fmt.Print("> ")
+		// Read the keyboad input.
 		input, err := reader.ReadString('\n')
 		if err != nil {
 			fmt.Println(err)
 		}
 
+		// Handle the execution of the input.
 		err = execInput(input)
 		if err != nil {
 			fmt.Println(err)
@@ -25,19 +27,20 @@ func main() {
 	}
 }
 
-// ErrNoPath is returned when 'cd' was called without a second argument
+// ErrNoPath is returned when 'cd' was called without a second argument.
 var ErrNoPath = errors.New("path required")
 
 func execInput(input string) error {
+	// Remove the new line character.
 	input = strings.TrimSuffix(input, "\n")
 
-	// Split the input on each space to separate the command and the arguments
+	// Split the input on each space to separate the command and the arguments.
 	args := strings.Split(input, " ")
 
-	// check for shell build-in command
+	// Check for shell build-in command.
 	switch args[0] {
 	case "cd":
-		// cd to home with empty path not yet supported
+		// 'cd' to home with empty path not yet supported.
 		if len(args) < 2 {
 			return ErrNoPath
 		}
@@ -45,14 +48,16 @@ func execInput(input string) error {
 		if err != nil {
 			return err
 		}
-		// stop further processing
+		// Stop further processing.
 		return nil
 	case "exit":
 		os.Exit(0)
 	}
 
-	// execute programm
+	// Prepare the command to execute.
 	cmd := exec.Command(args[0], args[1:]...)
+
+	// Execute the command and save it's output.
 	stdoutStderr, err := cmd.CombinedOutput()
 	if err != nil {
 		return err
