@@ -31,13 +31,13 @@ func main() {
 var ErrNoPath = errors.New("path required")
 
 func execInput(input string) error {
-	// Remove the new line character.
+	// Remove the newline character.
 	input = strings.TrimSuffix(input, "\n")
 
-	// Split the input on each space to separate the command and the arguments.
+	// Split the input separate the command and the arguments.
 	args := strings.Split(input, " ")
 
-	// Check for shell build-in command.
+	// Check for built-in commands.
 	switch args[0] {
 	case "cd":
 		// 'cd' to home with empty path not yet supported.
