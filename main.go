@@ -19,6 +19,14 @@ func main() {
 			fmt.Fprintln(os.Stderr, err)
 		}
 
+		// Remove the newline character.
+		input = strings.TrimSuffix(input, "\n")
+
+		// Skip an empty input.
+		if input == "" {
+			continue
+		}
+
 		// Handle the execution of the input.
 		err = execInput(input)
 		if err != nil {
@@ -31,9 +39,6 @@ func main() {
 var ErrNoPath = errors.New("path required")
 
 func execInput(input string) error {
-	// Remove the newline character.
-	input = strings.TrimSuffix(input, "\n")
-
 	// Split the input separate the command and the arguments.
 	args := strings.Split(input, " ")
 
