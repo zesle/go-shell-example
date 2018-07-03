@@ -58,10 +58,11 @@ func execInput(input string) error {
 	cmd := exec.Command(args[0], args[1:]...)
 
 	// Execute the command and save it's output.
-	stdoutStderr, err := cmd.CombinedOutput()
+	cmd.Stderr = os.Stderr
+	cmd.Stdout = os.Stdout
+	err := cmd.Run()
 	if err != nil {
 		return err
 	}
-	fmt.Printf("%s", stdoutStderr)
 	return nil
 }
