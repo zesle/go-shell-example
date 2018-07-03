@@ -57,9 +57,11 @@ func execInput(input string) error {
 	// Prepare the command to execute.
 	cmd := exec.Command(args[0], args[1:]...)
 
-	// Execute the command and save it's output.
+	// Set the correct output device.
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
+
+	// Execute the command and save it's output.
 	err := cmd.Run()
 	if err != nil {
 		return err
