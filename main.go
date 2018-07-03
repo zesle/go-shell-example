@@ -16,13 +16,13 @@ func main() {
 		// Read the keyboad input.
 		input, err := reader.ReadString('\n')
 		if err != nil {
-			fmt.Println(err)
+			fmt.Fprintln(os.Stderr, err)
 		}
 
 		// Handle the execution of the input.
 		err = execInput(input)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Fprintln(os.Stderr, err)
 		}
 	}
 }
