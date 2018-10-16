@@ -28,8 +28,7 @@ func main() {
 		}
 
 		// Handle the execution of the input.
-		err = execInput(input)
-		if err != nil {
+		if err = execInput(input); err != nil {
 			fmt.Fprintln(os.Stderr, err)
 		}
 	}
@@ -49,8 +48,7 @@ func execInput(input string) error {
 		if len(args) < 2 {
 			return ErrNoPath
 		}
-		err := os.Chdir(args[1])
-		if err != nil {
+		if err := os.Chdir(args[1]); err != nil {
 			return err
 		}
 		// Stop further processing.
@@ -67,8 +65,7 @@ func execInput(input string) error {
 	cmd.Stdout = os.Stdout
 
 	// Execute the command and save it's output.
-	err := cmd.Run()
-	if err != nil {
+	if err := cmd.Run(); err != nil {
 		return err
 	}
 	return nil
