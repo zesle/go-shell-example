@@ -48,11 +48,8 @@ func execInput(input string) error {
 		if len(args) < 2 {
 			return ErrNoPath
 		}
-		if err := os.Chdir(args[1]); err != nil {
-			return err
-		}
-		// Stop further processing.
-		return nil
+		// Change the directory and return the error.
+		return os.Chdir(args[1])
 	case "exit":
 		os.Exit(0)
 	}
@@ -64,9 +61,6 @@ func execInput(input string) error {
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
 
-	// Execute the command and save it's output.
-	if err := cmd.Run(); err != nil {
-		return err
-	}
-	return nil
+	// Execute the command return the error.
+	return cmd.Run()
 }
